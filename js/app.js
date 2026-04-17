@@ -31,10 +31,16 @@ const exportBtn = document.getElementById('exportIcs');
  * INITIALIZATION: Load saved data from LocalStorage
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const savedDate = localStorage.getItem('minervaTargetDate');
-    if (savedDate) {
-        targetDateInput.value = savedDate;
-        generateRoadmap(new Date(savedDate));
+    console.log("App initialized");
+    try {
+        const savedDate = localStorage.getItem('minervaTargetDate');
+        if (savedDate) {
+            console.log("Found saved date:", savedDate);
+            targetDateInput.value = savedDate;
+            generateRoadmap(new Date(savedDate));
+        }
+    } catch (e) {
+        console.error("Error during initialization:", e);
     }
 });
 
@@ -43,18 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 calculateBtn.addEventListener('click', () => {
     const selectedDateValue = targetDateInput.value;
+    console.log("Calculate clicked. Selected date:", selectedDateValue);
     
     if (!selectedDateValue) {
         alert("Please select a target deadline first!");
         return;
     }
 
-    const targetDate = new Date(selectedDateValue);
-    
-    // Save to LocalStorage for persistence
-    localStorage.setItem('minervaTargetDate', selectedDateValue);
-    
-    generateRoadmap(targetDate);
+    try {
+        const targetDate = new Date(selectedDateValue);
+        if (isNaN(targetDate.getTime())) {
+            throw new Error("Invalid date selected");
+        }
+        
+        // Save to LocalStorage for persistence
+        localStorage.setItem('minervaTargetDate', selectedDateValue);
+        
+        generateRoadmap(targetDate);
+    } catch (e) {
+        console.error("Error generating roadmap:", e);
+        alert("There was an error calculating your roadmap. Please try selecting the date again.");
+    }
 });
 
 function generateRoadmap(targetDate) {
