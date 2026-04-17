@@ -43,4 +43,17 @@
 3. **Mandatory Disclosure**: AI use is logged in `SCRATCHPAD.md`.
 **Trade-offs**: Development may be slower due to mandatory human review and documentation overhead, but the resulting system is more ethical, secure, and aligned with institutional values.
 
-<!-- Add new decisions below, incrementing the number. -->
+## Decision 003 — Tailwind CSS via Play CDN
+
+**Date**: 2026-04-16
+**Decision**: Use Tailwind CSS via the Play CDN for styling, while keeping the "no build step" architecture.
+**Rationale**: The user explicitly requested Tailwind CSS for a professional look. Using the CDN allows us to leverage Tailwind's utility classes without introducing a complex build pipeline (npm, PostCSS, etc.), which maintains the project's accessibility for learners.
+**Alternatives considered**: Vanilla CSS (originally planned), Bootstrap (less modern aesthetic).
+**Trade-offs**: Slightly larger initial page load due to the CDN script, but significantly faster development speed and easier responsive design.
+
+**Guardrails Alignment**:
+- **Privacy & IP**: No impact on data privacy.
+- **Disclosure**: Tailwind usage is visible in the source code.
+- **Responsibility**: Human developer chooses the styles.
+- **Bias & Trust**: Standard utility classes used for consistent, accessible UI.
+- **Values**: Clarity over cleverness (utility classes are very explicit).

@@ -2,13 +2,13 @@
 
 ## Project Identity
 
-**Name**: [Your App Name]
-**Purpose**: [One sentence — what does this app do, and why does it matter to the people who use it?]
-**Audience**: [Who uses this? What do they already know, and what are they trying to do?]
-**Human context**: [What changes in how people think, learn, or act because this app exists?]
+**Name**: Minerva Admissions Roadmap
+**Purpose**: A personalized timeline generator that takes a single user input (Target Deadline) and maps out a high-performance application strategy.
+**Audience**: Minerva applicants globally who want a clear, strategic path to submission.
+**Human context**: Reduces applicant stress by breaking a complex, high-stakes process into manageable, timed milestones, promoting focus and agency.
 
-**GitHub repo**: [username/repo-name]
-**Live URL**: [https://username.github.io/repo-name]
+**GitHub repo**: beketaruzhan/minerva-admissions-roadmap
+**Live URL**: https://beketaruzhan.github.io/minerva-admissions-roadmap
 
 ## Tech Stack
 
