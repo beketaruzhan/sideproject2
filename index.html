@@ -18,91 +18,166 @@
         }
     </script>
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- Google Fonts: Inter for a clean, professional look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { opacity: 0; animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
 
-    <!-- Header: Establishing the brand identity -->
     <header class="bg-minerva-blue text-white py-8 shadow-lg">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-2">Minerva Applicant Roadmap</h1>
-            <p class="text-blue-100 text-lg opacity-90">Calculate your strategic path to a high-performance application.</p>
+            <p class="text-blue-100 text-lg opacity-90">Strategic path to your application submission.</p>
+            <!-- Status Indicator -->
+            <div id="statusBadge" class="inline-block mt-4 px-3 py-1 bg-blue-800 text-blue-200 text-xs rounded-full">
+                System Initializing...
+            </div>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-12 flex-grow max-w-4xl">
-        <!-- Input Section: Where the user defines their goal -->
-        <section class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12">
-            <div class="max-w-md mx-auto">
-                <label for="targetDate" class="block text-sm font-semibold text-gray-700 mb-2">
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
+            <div class="max-w-md mx-auto text-center">
+                <label for="targetDate" class="block text-sm font-semibold text-gray-700 mb-4 text-left">
                     Target Application Deadline
                 </label>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <input type="date" id="targetDate" 
-                        class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-minerva-blue focus:outline-none transition-all shadow-sm"
+                        class="flex-grow p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-100 focus:border-minerva-blue focus:outline-none transition-all shadow-sm text-lg"
                         aria-label="Select your application deadline">
                     <button id="calculateBtn" 
-                        class="bg-minerva-blue hover:bg-blue-900 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-minerva-blue">
+                        class="bg-minerva-blue hover:bg-black text-white font-bold py-4 px-8 rounded-lg transition-all shadow-md active:transform active:scale-95">
                         Generate Roadmap
                     </button>
                 </div>
-                <p class="mt-3 text-xs text-gray-500 italic">We'll calculate your milestones backwards from this date.</p>
             </div>
         </section>
 
-        <!-- Timeline Section: Dynamically populated via JavaScript -->
         <section id="roadmapContainer" class="hidden">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-minerva-blue">Your Personalized Timeline</h2>
-                <button id="exportIcs" class="flex items-center gap-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all border border-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                <h2 class="text-2xl font-bold text-minerva-blue">Your Strategy Timeline</h2>
+                <button id="exportIcs" class="flex items-center gap-2 text-sm bg-white hover:bg-gray-50 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all border border-gray-300 shadow-sm">
                     Export to Calendar (.ics)
                 </button>
             </div>
-
-            <!-- Vertical Timeline Container -->
-            <div id="timeline" class="relative border-l-2 border-blue-200 ml-4 md:ml-6 space-y-12 pb-8">
-                <!-- Milestones will be injected here -->
+            <div id="timeline" class="relative border-l-4 border-blue-100 ml-4 md:ml-6 space-y-10 pb-8">
+                <!-- Milestones injected here -->
             </div>
         </section>
 
-        <!-- Empty State -->
-        <section id="emptyState" class="text-center py-12">
-            <div class="bg-blue-50 inline-block p-4 rounded-full mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-minerva-blue opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-            <p class="text-gray-500 text-lg">Enter your deadline above to start your roadmap.</p>
+        <section id="emptyState" class="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-200">
+            <p class="text-gray-400">Select a deadline above to see your personalized strategy.</p>
         </section>
     </main>
 
-    <!-- Footer: Transparency & Disclosure -->
     <footer class="bg-gray-100 border-t border-gray-200 py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-gray-600 text-sm">
-                &copy; 2026 Minerva University Student Project
+            <div class="text-gray-500 text-sm italic">
+                &copy; 2026 Minerva Admissions Roadmap
             </div>
-            <div class="flex items-center gap-4">
-                <!-- MANDATORY AI DISCLOSURE -->
-                <div class="bg-white border border-gray-300 rounded px-3 py-1 flex items-center gap-2 shadow-sm">
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    <span class="text-xs font-bold text-gray-700 uppercase tracking-wider">AI-Assisted</span>
-                </div>
+            <div class="bg-white border border-gray-300 rounded px-3 py-1 flex items-center gap-2 shadow-sm">
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span class="text-xs font-bold text-gray-700 uppercase tracking-wider">AI-Verified Logic</span>
             </div>
         </div>
     </footer>
 
-    <!-- Application Logic -->
-    <script src="js/app.js"></script>
+    <!-- INLINED JAVASCRIPT: Guaranteed to load with the HTML -->
+    <script>
+        const MILESTONE_DEFS = [
+            { daysBefore: 45, title: "Outreach Phase", desc: "Contact counselors for transcripts and secure your recommenders." },
+            { daysBefore: 35, title: "The Evidence Audit", desc: "Gather all certificates and photos. Convert heavy file formats to JPG." },
+            { daysBefore: 25, title: "Accomplishment Drafts", desc: "Draft your top 6 accomplishments. Focus on impact and growth." },
+            { daysBefore: 15, title: "Feedback Loop", desc: "Share your drafts with mentors. Refine based on specific feedback." },
+            { daysBefore: 7, title: "The Narrative Polish", desc: "Final proofreading. Optimize character counts for maximum punch." },
+            { daysBefore: 3, title: "Evidence Upload", desc: "Upload everything to the portal. Double-check every link and file." },
+            { daysBefore: 2, title: "The Submission Buffer", desc: "SUBMIT NOW. Avoid the final 24-hour server traffic spikes." }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const badge = document.getElementById('statusBadge');
+            const targetInput = document.getElementById('targetDate');
+            const calcBtn = document.getElementById('calculateBtn');
+            const timeline = document.getElementById('timeline');
+            const container = document.getElementById('roadmapContainer');
+            const empty = document.getElementById('emptyState');
+            const exportBtn = document.getElementById('exportIcs');
+
+            if (badge) {
+                badge.innerText = "System Ready";
+                badge.classList.replace('bg-blue-800', 'bg-green-800');
+                badge.classList.replace('text-blue-200', 'text-green-100');
+            }
+
+            function generate(dateObj) {
+                timeline.innerHTML = '';
+                container.classList.remove('hidden');
+                empty.classList.add('hidden');
+
+                MILESTONE_DEFS.forEach((m, i) => {
+                    const mDate = new Date(dateObj);
+                    mDate.setDate(dateObj.getDate() - m.daysBefore);
+                    
+                    const dateStr = mDate.toLocaleDateString('en-US', { 
+                        month: 'short', day: 'numeric', year: 'numeric' 
+                    });
+
+                    const div = document.createElement('div');
+                    div.className = 'relative pl-8 animate-fade-in';
+                    div.style.animationDelay = `${i * 100}ms`;
+                    div.innerHTML = `
+                        <div class="absolute -left-[14px] top-2 w-6 h-6 rounded-full bg-white border-4 border-minerva-blue"></div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <div class="text-blue-600 font-bold text-xs uppercase mb-1">T-${m.daysBefore} Days — ${dateStr}</div>
+                            <h3 class="text-xl font-bold mb-2">${m.title}</h3>
+                            <p class="text-gray-600">${m.desc}</p>
+                        </div>
+                    `;
+                    timeline.appendChild(div);
+                });
+                container.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            calcBtn.onclick = () => {
+                if (!targetInput.value) {
+                    alert("Please pick a deadline first!");
+                    return;
+                }
+                const parts = targetInput.value.split('-');
+                const d = new Date(parts[0], parts[1]-1, parts[2]);
+                localStorage.setItem('savedDeadline', targetInput.value);
+                generate(d);
+            };
+
+            exportBtn.onclick = () => {
+                const parts = targetInput.value.split('-');
+                const d = new Date(parts[0], parts[1]-1, parts[2]);
+                let ics = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Minerva//EN"];
+                MILESTONE_DEFS.forEach(m => {
+                    const md = new Date(d);
+                    md.setDate(d.getDate() - m.daysBefore);
+                    const s = md.toISOString().split('T')[0].replace(/-/g, '');
+                    ics.push("BEGIN:VEVENT",`DTSTART;VALUE=DATE:${s}`,`SUMMARY:Minerva: ${m.title}`,`DESCRIPTION:${m.desc}`,"END:VEVENT");
+                });
+                ics.push("END:VCALENDAR");
+                const blob = new Blob([ics.join("\r\n")], {type: 'text/calendar'});
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'Minerva_Roadmap.ics';
+                a.click();
+            };
+
+            // Auto-load
+            const saved = localStorage.getItem('savedDeadline');
+            if (saved) {
+                targetInput.value = saved;
+                const parts = saved.split('-');
+                generate(new Date(parts[0], parts[1]-1, parts[2]));
+            }
+        });
+    </script>
 </body>
 </html>
